@@ -4,11 +4,10 @@ from models.author import Author
 from models.book import Book
 
 def save(author):
-    sql = "INSERT INTO authors (first_name, last_name) VALUES (%s, %s) RETUNING *"
+    sql = "INSERT INTO authors (first_name, last_name) VALUES (%s, %s) RETURNING *"
     values = [author.first_name, author.last_name]
     results = run_sql(sql,values)
-    id = results[0]['id']
-    author.id = id
+    author.id = results[0]['id']
     return author
 
 def select(id):
@@ -32,3 +31,7 @@ def select_all():
         author = Author (row['first_name'], row['last_name'], row['id'] )
         authors.append(author)
     return authors
+
+def delete_all():
+    sql = 'DELETE FROM authors'
+    run_sql (sql)
